@@ -1,0 +1,40 @@
+import pandas as pd
+
+# -------------------------------
+# PART 1: Titanic Dataset
+# -------------------------------
+df1 = pd.read_csv("titanic.csv")
+
+print("===== TITANIC DATASET =====")
+
+# Group by categorical variable (Sex) and analyze Fare
+grouped = df1.groupby('Sex')['Fare']
+
+print("\nMean:\n", grouped.mean())
+print("\nMedian:\n", grouped.median())
+print("\nMinimum:\n", grouped.min())
+print("\nMaximum:\n", grouped.max())
+print("\nStandard Deviation:\n", grouped.std())
+
+# List of values for each category
+fare_list = grouped.apply(list)
+print("\nFare values list:\n", fare_list)
+
+
+# -------------------------------
+# PART 2: Iris Dataset
+# -------------------------------
+df2 = pd.read_csv("Iris.csv")
+
+print("\n\n===== IRIS DATASET =====")
+
+grouped_iris = df2.groupby('Species')
+
+# Mean
+print("\nMean:\n", grouped_iris.mean())
+
+# Standard Deviation
+print("\nStandard Deviation:\n", grouped_iris.std())
+
+# Percentiles (25%, 50%, 75%)
+print("\nPercentiles:\n", grouped_iris.quantile([0.25, 0.5, 0.75]))
