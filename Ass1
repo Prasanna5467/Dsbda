@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+from sklearn import preprocessing
+
+# Load dataset
+df = pd.read_csv("iris.csv")
+
+# Basic checks
+print(df.shape)
+print(df.info())
+print(df.describe())
+print(df.isnull().sum())
+print(df.dtypes)
+
+# Handle missing values
+df.fillna(df.mean(numeric_only=True), inplace=True)
+
+# Normalization
+col_names = ["SepalLengthCm", "SepalWidthCm", "PetalLengthCm", "PetalWidthCm"]
+min_max = preprocessing.MinMaxScaler()
+df[col_names] = min_max.fit_transform(df[col_names])
+
+# One Hot Encoding
+one_hot = preprocessing.OneHotEncoder()
+encoded = one_hot.fit_transform(df[['Species']]).toarray()
+
+encoded_df = pd.DataFrame(encoded, columns=one_hot.get_feature_names_out(['Species']))
+
+# Merge back
+df = pd.concat([df, encoded_df], axis=1)
+df.drop('Species', axis=1, inplace=True)
+
+print(df.head())
