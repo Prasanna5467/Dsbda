@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+
+# Load dataset
+df = pd.read_csv("academic.csv")
+
+# 1. Check missing values
+print(df.isnull().sum())
+
+# Fill missing values
+df.fillna(df.mean(numeric_only=True), inplace=True)
+
+# 2. Detect outliers using IQR (for Math)
+Q1 = df['Math'].quantile(0.25)
+Q3 = df['Math'].quantile(0.75)
+IQR = Q3 - Q1
+
+lower = Q1 - 1.5 * IQR
+upper = Q3 + 1.5 * IQR
+
+# Remove outliers
+df = df[(df['Math'] >= lower) & (df['Math'] <= upper)]
+
+# 3. Data Transformation (Normalization)
+df['Math'] = (df['Math'] - df['Math'].min()) / (df['Math'].max() - df['Math'].min())
+
+# Final output
+print(df.head())
