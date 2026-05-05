@@ -1,0 +1,89 @@
+# =========================
+# NLP Practical - Complete Code
+# =========================
+
+import nltk
+import re
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk import pos_tag
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# -------------------------
+# Download required data (run once)
+# -------------------------
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+# -------------------------
+# Sample Text
+# -------------------------
+text = "Natural Language Processing is a field of Artificial Intelligence that deals with text data."
+
+# -------------------------
+# 1. Tokenization
+# -------------------------
+print("Sentence Tokenization:")
+print(sent_tokenize(text))
+
+tokens = word_tokenize(text)
+print("\nWord Tokenization:")
+print(tokens)
+
+# -------------------------
+# 2. POS Tagging
+# -------------------------
+print("\nPOS Tagging:")
+print(pos_tag(tokens))
+
+# -------------------------
+# 3. Stopwords Removal
+# -------------------------
+stop_words = set(stopwords.words("english"))
+clean_text = re.sub('[^a-zA-Z]', ' ', text)
+
+tokens = word_tokenize(clean_text.lower())
+filtered = [w for w in tokens if w not in stop_words]
+
+print("\nAfter Stopword Removal:")
+print(filtered)
+
+# -------------------------
+# 4. Stemming
+# -------------------------
+ps = PorterStemmer()
+stemmed = [ps.stem(w) for w in filtered]
+
+print("\nStemmed Words:")
+print(stemmed)
+
+# -------------------------
+# 5. Lemmatization
+# -------------------------
+lemmatizer = WordNetLemmatizer()
+lemmatized = [lemmatizer.lemmatize(w) for w in filtered]
+
+print("\nLemmatized Words:")
+print(lemmatized)
+
+# -------------------------
+# 6. TF-IDF
+# -------------------------
+documents = [
+    "Natural language processing is fun",
+    "Machine learning is part of AI",
+    "NLP uses machine learning techniques"
+]
+
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(documents)
+
+print("\nFeature Names:")
+print(vectorizer.get_feature_names_out())
+
+print("\nTF-IDF Matrix:")
+print(tfidf_matrix.toarray())
