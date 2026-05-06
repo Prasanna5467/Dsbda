@@ -1,0 +1,26 @@
+scala -version
+
+sudo apt update
+sudo apt install scala
+
+nano Addition.scala // create file
+
+import scala.io.StdIn
+
+object Addition {
+  def main(args: Array[String]): Unit = {
+    println("Enter first number:")
+    val a = StdIn.readInt()
+
+    println("Enter second number:")
+    val b = StdIn.readInt()
+
+    val sum = a + b
+
+    println("Sum = " + sum)
+  }
+}
+
+
+scalac Addition.scala//compile
+scala Addition
